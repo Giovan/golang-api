@@ -20,22 +20,20 @@ services:
 # Postgres DBs
 # Main DB
       - HOST=db
-      - DATABASE=docsdb
-      - USER=docs
-      - PASSWORD=docs
+      - DATABASE=tererdb
+      - USER=terer
+      - PASSWORD=terer
 # Mongo DBs
 # Auth Logs Mongodb
       - HOST_MONGO=mongo
-      - NAME_MONGO=docs-app-mongo
-      - USER_MONGO=docs-db-user
-      - PASS_MONGO=docs-db-pass
+      - NAME_MONGO=terer-app-mongo
+      - USER_MONGO=terer-db-user
+      - PASS_MONGO=terer-db-pass
 # API logger Mongodb
       - HOST_MONGO_LOGS=mongo-logger
-      - NAME_MONGO_LOGS=docs-app-mongo-logger
-      - USER_MONGO_LOGS=docs-db-user-logger
-      - PASS_MONGO_LOGS=docs-db-pass-logger
-      - SENDGRID_API_KEY=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
-# - PGCRYPTO_KEY=LOLOLOLOLOLOLOL
+      - NAME_MONGO_LOGS=terer-app-mongo-logger
+      - USER_MONGO_LOGS=terer-db-user-logger
+      - PASS_MONGO_LOGS=terer-db-pass-logger
     command: >
       sh -c "./main"
     depends_on:
@@ -45,8 +43,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=docsdb
-      - POSTGRES_USER=docs
-      - POSTGRES_PASSWORD=docs
+      - POSTGRES_DB=tererdb
+      - POSTGRES_USER=terer
+      - POSTGRES_PASSWORD=terer
 volumes:
   data-volume:
