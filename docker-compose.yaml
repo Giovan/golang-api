@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  web:
+    image: terer:lastest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    container_name: terer_container
+    ports:
+      - "8087:8000"
+    volumes:
+      - .:/app
+    environment:
+      - SECRET_KEY=@gi!0^&qap%-rkd-bj86*dsxbn9f#sz+%4ro59f$ppd%=v=3lb
+      - AWS_S3_KYC_BUCKET=
+      - AWS_S3_QR_CODES_BUCKET=
+      - AWS_ACCESS_KEY=
+      - AWS_SECRET_KEY=
+# Postgres DBs
+# Main DB
+      - HOST=db
+      - DATABASE=docsdb
+      - USER=docs
+      - PASSWORD=docs
+# Mongo DBs
+# Auth Logs Mongodb
+      - HOST_MONGO=mongo
+      - NAME_MONGO=docs-app-mongo
+      - USER_MONGO=docs-db-user
+      - PASS_MONGO=docs-db-pass
+# API logger Mongodb
+      - HOST_MONGO_LOGS=mongo-logger
+      - NAME_MONGO_LOGS=docs-app-mongo-logger
+      - USER_MONGO_LOGS=docs-db-user-logger
+      - PASS_MONGO_LOGS=docs-db-pass-logger
+      - SENDGRID_API_KEY=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
+# - PGCRYPTO_KEY=LOLOLOLOLOLOLOL
+    command: >
+      sh -c "./main"
+    depends_on:
+      - db
+  db:
+    image: postgres:10-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=docsdb
+      - POSTGRES_USER=docs
+      - POSTGRES_PASSWORD=docs
+volumes:
+  data-volume:
