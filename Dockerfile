@@ -4,11 +4,18 @@ FROM golang:latest AS build-env
 RUN mkdir /app
 ADD . /app/
 WORKDIR /app
-RUN cd /app && GO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
-# go build -o myapp
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# RUN go mod download
+
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
+
+# Build the Go app
+RUN go build -o main .
 
 FROM scratch
-COPY --from=build-env /app/myapp .
+COPY --from=build-env /app .
 
 # Expose port 8888 to the outside world
 EXPOSE 8888

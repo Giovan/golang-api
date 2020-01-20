@@ -6,11 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        STATIC_URL: '/static/'
     container_name: terer_container
     ports:
-      - "8087:8000"
+      - "8888:8888"
     volumes:
       - .:/app
     environment:
