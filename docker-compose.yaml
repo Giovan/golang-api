@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  web:
+    image: terer:lastest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: terer_container
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    environment:
+      - SECRET_KEY=@gi!0^&qap%-rkd-bj86*dsxbn9f#sz+%4ro59f$ppd%=v=3lb
+      - AWS_S3_KYC_BUCKET=
+      - AWS_S3_QR_CODES_BUCKET=
+      - AWS_ACCESS_KEY=
+      - AWS_SECRET_KEY=
+# Postgres DBs
+# Main DB
+      - HOST=db
+      - DATABASE=tererdb
+      - USER=terer
+      - PASSWORD=terer
+# Mongo DBs
+# Auth Logs Mongodb
+      - HOST_MONGO=mongo
+      - NAME_MONGO=terer-app-mongo
+      - USER_MONGO=terer-db-user
+      - PASS_MONGO=terer-db-pass
+# API logger Mongodb
+      - HOST_MONGO_LOGS=mongo-logger
+      - NAME_MONGO_LOGS=terer-app-mongo-logger
+      - USER_MONGO_LOGS=terer-db-user-logger
+      - PASS_MONGO_LOGS=terer-db-pass-logger
+    command: >
+      sh -c "./main"
+    depends_on:
+      - db
+  db:
+    image: postgres:10-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=tererdb
+      - POSTGRES_USER=terer
+      - POSTGRES_PASSWORD=terer
+volumes:
+  data-volume:
